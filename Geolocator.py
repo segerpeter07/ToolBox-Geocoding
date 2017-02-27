@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 import json
+import mbta_finder
 from pprint import pprint
 
 
@@ -49,8 +50,19 @@ def url_maker(location):
     return res
 
 
+def find_stop(lat, lon):
+    base = 'http://realtime.mbta.com/developer/api/v2/stopsbylocation?api_key=wX9NwuHnZU2ToO7GmGR9uw&lat='
+    url = base + str(lat) + '&lon=' + str(lon) + '&format=json'
+    response_data = read_data(url)
+    stop = response_data['stop'][1]['stop_name']
+    distance = response_data['stop'][1]['distance']
+    return stop, distance
+
+
 if __name__ == '__main__':
     url = url_maker(input('Location: '))
     data = read_data(url)
     print(address_name(data))
-    print(lng_lat(data))
+    lat, lng = lng_lat(data)
+    stop, distance = find_stop(lat, lng)
+    print('Stop name: ' + stop + ' Distance: ' + str(distance))
