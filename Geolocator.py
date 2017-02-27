@@ -1,5 +1,4 @@
 from urllib.request import urlopen
-from urllib.parse import urlencode
 import json
 from pprint import pprint
 
@@ -42,7 +41,10 @@ def url_maker(location):
     res = base
     i = 0
     while i < len(words):
-        res = res + '%' + words[i]
+        if i == 0:
+            res = res + words[i]
+        else:
+            res = res + '%' + words[i]
         i += 1
     return res
 
