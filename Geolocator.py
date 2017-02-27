@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+from urllib.parse import urlencode
 import json
 from pprint import pprint
 
@@ -22,11 +23,32 @@ def address_name(data):
 
 
 def lng_lat(data):
-    return data['results'][0]['geometry']['location']
+    """
+    Given a vaid JSON module, returns the latitude and longitude of the location
+    """
+    lat = data['results'][0]['geometry']['location']['lat']
+    lng = data['results'][0]['geometry']['location']['lng']
+    return lat, lng
+
+
+def url_maker(location):
+    """
+    Given a string query, converts to URL that can be used to find location
+    """
+    query = location
+    words = []
+    base = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+    words = query.split(' ')
+    res = base
+    i = 0
+    while i < len(words):
+        res = res + '%' + words[i]
+        i += 1
+    return res
 
 
 if __name__ == '__main__':
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?address=Fenway%20Park'
+    url = url_maker(input('Location: '))
     data = read_data(url)
     print(address_name(data))
     print(lng_lat(data))
