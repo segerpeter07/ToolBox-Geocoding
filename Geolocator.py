@@ -56,6 +56,7 @@ def find_stop(lat, lon):
     response_data = read_data(url)
     stop = response_data['stop'][1]['stop_name']
     distance = response_data['stop'][1]['distance']
+    arrival_time = response_data['stop'][1]
     return stop, distance
 
 
